@@ -51,7 +51,7 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         setBackground(new Color(156, 95, 42));
         setLayout(new BorderLayout(3, 3));
-        
+
         cardPanel = new CardPanel();
         add(cardPanel, BorderLayout.CENTER);
         
@@ -62,31 +62,33 @@ public class GamePanel extends JPanel {
         hitButton = new JButton("   Hit   ");
         hitButton.setBackground(Color.red);
         hitButton.setSize(60, 25);
-        hitButton.setFont(new Font("Montserrat Alternates", Font.PLAIN, 18));
+        hitButton.setFont(new Font("Nimbus Mono", Font.BOLD, 18));
         hitButton.setToolTipText("Add another card");
         hitButton.addActionListener(cardPanel);
+        hitButton.setEnabled(false);
         buttonPanel.add(hitButton);
         
         standButton = new JButton("Stand");
         standButton.setBackground(Color.yellow);
         standButton.setSize(60, 25);
-        standButton.setFont(new Font("Montserrat Alternates", Font.PLAIN, 18));
+        standButton.setFont(new Font("Nimbus Mono", Font.BOLD, 18));
         standButton.setToolTipText("Add no more cards");
         standButton.addActionListener(cardPanel);
+        standButton.setEnabled(false);
         buttonPanel.add(standButton);
         
         newGameButton = new JButton("New Game");
         newGameButton.setBackground(Color.green);
         newGameButton.setSize(60, 25);
-        newGameButton.setFont(new Font("Montserrat Alternates", Font.PLAIN, 18));
+        newGameButton.setFont(new Font("Nimbus Mono", Font.BOLD, 18));
         newGameButton.setToolTipText("Start a new game");
         newGameButton.addActionListener(cardPanel);
         buttonPanel.add(newGameButton);
         
         JLabel wagerLabel = new JLabel("    Wager: $");
-        wagerLabel.setFont(new Font("Montserrat Alternates", Font.PLAIN, 17));
+        wagerLabel.setFont(new Font("Nimbus Mono", Font.BOLD, 18));
         wagerField = new JTextField("25", 3);
-        wagerField.setFont(new Font("Montserrat Alternates", Font.PLAIN, 18));
+        wagerField.setFont(new Font("Nimbus Mono", Font.BOLD, 18));
         wagerField.setBorder(BorderFactory.createLineBorder(Color.decode("#9C5F2A"),1 , false));
         wagerField.setBackground(Color.decode("#9C5F2A"));
         wagerField.setToolTipText("Click to change wager");
@@ -120,17 +122,16 @@ public class GamePanel extends JPanel {
             loadImages();
             setBackground(new Color(65, 110, 12));
             setForeground(new Color(237, 237, 69));
-            
-            gameFont = new Font("Montserrat Alternates", Font.PLAIN, 28);
+
             message = "Click \"New Game\" to start a new game.";
             playerMoney = 1000;
             moneyString = "Your money $" + getPlayerMoney();
+
             new WelcomeDialog(null, true).setVisible(true);
             
         }//end of the CardPanel Constructor
         /**
          * loadImages Method - Loads the card images from the cardDeck file
-         * @param Void
          */
         private void loadImages() {
             ClassLoader classLoader = this.getClass().getClassLoader();
@@ -149,7 +150,7 @@ public class GamePanel extends JPanel {
          * setGameStatus Method - Sets the status of the game.  In addition to setting the game
          * status, it enables and disables the hit, stand, and new game buttons, and the textfield
          * to reflect the state of the game.
-         * @param Boolean - the new value of the game status
+         * @param status - Boolean representing the value of the game status
          */
         private void setGameStatus(boolean status) {
             gameInProgress = status;
@@ -171,8 +172,7 @@ public class GamePanel extends JPanel {
          * checkWager Method - Determines whether or not the wager is valid.  It reads the wager
          * from the wagerField.  If an error occurs, the message in the panel is changed to inform
          * the player of the error.
-         * @param Void
-         * @return Boolean - Returns true, if the wager is read without error; otherwise, it returns
+         * @return boolean - Returns true, if the wager is read without error; otherwise, it returns
          * false.
          */
         private boolean checkWager() {
@@ -205,9 +205,8 @@ public class GamePanel extends JPanel {
             
         }//end of the checkWager Method
         /**
-         * getPlayerMoney Method -
-         * @param Void
-         * @return Int - Returns the playerMoney in the form of an integer
+         * getPlayerMoney Method - Gets the amount of money the player has
+         * @return playerMoney - Returns the playerMoney in the form of an integer
          */
         private int getPlayerMoney() {
             return playerMoney;
@@ -218,9 +217,7 @@ public class GamePanel extends JPanel {
          * and called in the actionPerformed method.  If the new game is started, each player is
          * dealt two cards.  If one of the players has blackjack (21), the game ends.  Otherwise,
          * gameInProgress is set to true and the game continues.
-         * @param Void
          */
-        @SuppressWarnings("UnnecessaryReturnStatement")
         public void doNewGame() {
             if (gameInProgress) {
                 //If the current game is not over, it is an error to try to start a new game
@@ -270,10 +267,8 @@ public class GamePanel extends JPanel {
         }//end of the doNewGame Method
         /**
          * doHit Method - Adds another card to the blackjack hand, when the actionPerformed 
-         * method calls this method. 
-         * @param Void
+         * method calls this method.
          */
-        @SuppressWarnings("UnnecessaryReturnStatement")
         public void doHit() {
             if (gameInProgress == false) {//First check whether or not the game is in progress
                 message = "Click \"New Game\" to start a new game.";
@@ -303,9 +298,7 @@ public class GamePanel extends JPanel {
         /**
          * doStand Method - Stops adding cards to the blackjack hand, when the actionPerformed
          * method calls this method
-         * @param Void
          */
-        @SuppressWarnings("UnnecessaryReturnStatement")
         public void doStand() {
             if (gameInProgress == false) {
                 message = "Click \"New Game\" to start a new game.";
@@ -355,10 +348,9 @@ public class GamePanel extends JPanel {
         /**
          * paint Method - Overrides the paint Method of the Abstract JPanel Class, and respond to the
          * CardPanel Class.  It draws the dealt cards and game status messages on the panel.
-         * @param Graphics - the graphic context
+         * @param g - the Graphic context
          */
         @Override
-        @SuppressWarnings("UnnecessaryReturnStatement")
         public void paint(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
@@ -426,11 +418,11 @@ public class GamePanel extends JPanel {
         /**
          * drawCard Method - Draws a card in a rectangle with it upper left corner at a 
          * specified point (X, Y).  Drawing the card requires the cardDeck image file.
-         * @param Graphics - The graphics context
-         * @param Card - The card to be drawn.  If the value is null, then a face-down
+         * @param g - The Graphics context
+         * @param card - The card to be drawn.  If the value is null, then a face-down
          * card is drawn
-         * @param Int - The X coordinate of the upper left corner of the card
-         * @param Int - The Y coordinate of the upper left corner of the card
+         * @param x  - Integer representing the X coordinate of the upper left corner of the card
+         * @param y - Integer representing the Y coordinate of the upper left corner of the card
          */
         public void drawCard(Graphics g, Card card, int x, int y) {
             
@@ -471,12 +463,12 @@ public class GamePanel extends JPanel {
             }
             g2d.drawImage(cardImages, x, y, (x + 100), (y + 148), coordX, coordY, (coordX + 73), 
                                 (coordY + 115),(ImageObserver) this);
-            
+
         }//end of the drawCard Method
         /**
          * actionPerformed Method - Overrides the actionPerformed Method of the ActionListener 
          * Interface, and responds to action events of the buttons
-         * @param ActionEvent - the events of clicking the buttons
+         * @param ae - the ActionEvents of clicking the buttons
          */
         @Override
         public void actionPerformed(ActionEvent ae) {
@@ -508,9 +500,8 @@ public class GamePanel extends JPanel {
         
         /**
          * WelcomeDialog Constructor - Creates an instance of the WelcomeDialog
-         * @param JFrame - the parent frame
-         * @param String - the title
-         * @param Boolean - the modal
+         * @param frame - JFrame representing the parent frame
+         * @param modal - Boolean representing the modal
          */
         @SuppressWarnings("LeakingThisInConstructor")
         public WelcomeDialog(JFrame frame, Boolean modal) {
@@ -519,20 +510,19 @@ public class GamePanel extends JPanel {
             //The following 2 lines of code creates a null icon for the JDialog
             Image icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB_PRE);
             setIconImage(icon);
-            
-   
+
             try { 
                 welcomeImage = ImageIO.read(WelcomeDialog.class.getResource("/img/welcomeImage.png"));
                 JPanel imagePanel = new JPanel() {
                     /**
                     * paintComponent Method - Overrides the paintComponent Method of the Abstract JPanel
                     * Class, and redefines it add the image to the imagePanel
-                    * @param Graphics - the graphics context
+                    * @param g - the Graphics context
                     */  
                     @Override
                     public void paintComponent(Graphics g) {
                      
-                        g.drawImage(welcomeImage, 0, 0, getWidth(), getHeight(), this);   
+                        g.drawImage(welcomeImage, 0, 0, getWidth(), getHeight(), this);
                     }
                 };
                 getContentPane().add(imagePanel, BorderLayout.CENTER);
@@ -544,7 +534,6 @@ public class GamePanel extends JPanel {
 
             setLocation(500, 300);
             setSize(640, 300);
-   
             okayButton = new JButton(" OK ");
             okayButton.addActionListener(this);
             
@@ -552,7 +541,7 @@ public class GamePanel extends JPanel {
               /**
                * windowClosing Method - Overrides the windowClosing Method of the WindowAdapter
                * Interface, and responds to the closing of the WelcomeDialog
-               * @param WindowEvent - the window event of closing the dialog
+               * @param we - the WindowEvent of closing the dialog
                */  
                 @Override
                 public void windowClosing(WindowEvent we) {
@@ -571,7 +560,7 @@ public class GamePanel extends JPanel {
         /**
          * actionPerformed Method - Overrides the actionPerformed method of the ActionListener
          * Interface, and responds to okayButton
-         * @param ActionEvent - the event of the button
+         * @param ae - the ActionEvent of the button
          */
         @Override
         public void actionPerformed(ActionEvent ae) {
@@ -582,7 +571,7 @@ public class GamePanel extends JPanel {
     }//end of the WelcomeDialog Class
     /**
      * main Method - Contains the command line arguments
-     * @param String[] - the command line arguments
+     * @param args - String[] representing the command line arguments
      */
     public static void main(String[] args) {
         /* Set the Nimbus look and feel */
@@ -612,6 +601,7 @@ public class GamePanel extends JPanel {
         JFrame frame = new JFrame("B l a c k j a c k");
         Image icon = Toolkit.getDefaultToolkit().getImage(GamePanel.class.
                                             getResource("/img/blackjack.png"));
+
         frame.setIconImage(icon);
         frame.setSize(800, 550);
         frame.setResizable(false);
